@@ -8,9 +8,18 @@ import {
   Paper
 } from '@mui/material';
 import { Delete, Edit } from '@mui/icons-material';
-import {Device} from "../../types/device";
+import {DeviceWithId} from "../../types/device";
+import {useContext} from "react";
+import {DataContext} from "../../context/data";
 
-export default function Table({devices}: {devices: Device[]}) {
+type Table = {
+  devices: DeviceWithId[];
+  setEdit: (arg: DeviceWithId) => void;
+}
+
+export default function Table({devices, setEdit}: Table) {
+  const {removeDevice} = useContext(DataContext);
+
   return (
     <TableContainer component={Paper}>
       <TableMUI aria-label="devices table">
@@ -24,7 +33,7 @@ export default function Table({devices}: {devices: Device[]}) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {devices?.map((device: Device) => (
+          {devices?.map((device: DeviceWithId) => (
             <TableRow
               key={device.id}
             >
@@ -33,8 +42,19 @@ export default function Table({devices}: {devices: Device[]}) {
               <TableCell align="right">{device.type}</TableCell>
               <TableCell align="right">{device.hddCapacity}</TableCell>
               <TableCell align="right">
-                <Edit cursor="pointer" titleAccess="Edit" />
-                <Delete cursor="pointer" titleAccess="Delete" />
+                <Edit
+                  cursor="pointer"
+                  titleAccess="Edit"
+                  onClick={() => setEdit({
+                    ...device,
+                    isEditing: true,
+                  })}
+                />
+                <Delete
+                  cursor="pointer"
+                  titleAccess="Delete"
+                  onClick={() => removeDevice(device.id)}
+                />
               </TableCell>
             </TableRow>
           ))}

@@ -1,9 +1,9 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Box, InputLabel, MenuItem, FormControl} from '@mui/material';
 import SelectMUI, { SelectChangeEvent } from '@mui/material/Select';
 
 type Option = {
-  id: number;
+  id: string;
   value: string;
 }
 
@@ -11,10 +11,17 @@ type Select = {
   options: Option[];
   label: string;
   onChange: (arg: string) => void;
+  initialValue: string;
 }
 
-export default function Select({options, label, onChange}: Select) {
+export default function Select({options, label, onChange, initialValue}: Select) {
   const [value, setValue] = useState('');
+
+  useEffect(() => {
+    if(initialValue) {
+      setValue(initialValue);
+    }
+  }, [initialValue])
 
   const handleChange = (event: SelectChangeEvent) => {
     const value = event.target.value as string;

@@ -1,11 +1,21 @@
 import {createContext, useEffect, useState} from 'react'
-import {getDevices} from "../../api";
-import {Device} from "../../types/device";
+import {getDevices, deleteDevice, updateDevice as updateDeviceAPI} from "../../api";
+import {DeviceWithId} from "../../types/device";
 
-export const DataContext = createContext<Device[]>([]);
+type Context = {
+  devices: DeviceWithId[];
+  removeDevice: (arg: string) => void;
+  updateDevice: (arg: DeviceWithId) => void;
+}
+
+export const DataContext = createContext<Context>({
+  devices: [],
+  removeDevice: () => null,
+  updateDevice: () => null
+});
 
 function DataContextProvider({ children }: JSX.ElementChildrenAttribute): JSX.Element {
-  const [devices, setDevices] = useState<Device[]>([]);
+  const [devices, setDevices] = useState<DeviceWithId[]>([]);
 
   useEffect(() => {
     getDevices().then(data => {
@@ -13,8 +23,27 @@ function DataContextProvider({ children }: JSX.ElementChildrenAttribute): JSX.El
     })
   }, [])
 
+  function removeDevice(id: string) {
+    deleteDevice(id).then(response => {
+      if (response) {
+        const updatedDevices = devices.filter(device => device.id !== id);
+        setDevices(updatedDevices);
+      }
+    })
+  }
+
+  function updateDevice(device: DeviceWithId) {
+    updateDeviceAPI(device).then(response => {
+      if(response) {
+        getDevices().then(data => {
+          setDevices(data)
+        });
+      }
+    })
+  }
+
   return (
-    <DataContext.Provider value={devices}>
+    <DataContext.Provider value={{devices, removeDevice, updateDevice}}>
       {children}
     </DataContext.Provider>
   )

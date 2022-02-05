@@ -1,20 +1,35 @@
 import axios from 'axios';
-import {Device} from "./types/device";
+import {Device, DeviceWithId, DeviceApi} from "./types/device";
+import {options} from "./constants";
 
 const URL = 'http://localhost:3000';
 
-export async function getDevices(): Promise<Device[]> {
-  let response;
+function normalizeData(data: DeviceApi[]) {
+  function getTypeValue(item: string) {
+    return options.filter(opt => opt.id === item)[0].value
+  }
+
+  return data.map((it) => ({
+    ...it,
+    hddCapacity: it.hdd_capacity,
+    systemName: it.system_name,
+    type: getTypeValue(it.type)
+  }))
+}
+
+export async function getDevices(): Promise<DeviceWithId[]> {
+  let response: DeviceWithId[] = [];
   try {
-    response = await axios.get(`${URL}/devices`);
+    const dataApi = await axios.get(`${URL}/devices`);
+    response = normalizeData(dataApi.data);
   } catch (e) {
     console.log('Error', e?.message)
   }
 
-  return response?.data;
+  return response;
 }
 
-export async function getDevice(id: string): Promise<Device> {
+export async function getDevice(id: string): Promise<DeviceApi> {
   let response;
   try {
     response = await axios.get(`${URL}/devices/${id}`);
@@ -40,7 +55,7 @@ export async function addDevice({systemName, type, hddCapacity}: Device): Promis
   return response?.data;
 }
 
-export async function updateDevice({id, systemName, type, hddCapacity}: Device): Promise<Device> {
+export async function updateDevice({id, systemName, type, hddCapacity}: DeviceWithId): Promise<number> {
   let response;
   try {
     response = await axios.put(`${URL}/devices/${id}`, {
@@ -55,7 +70,7 @@ export async function updateDevice({id, systemName, type, hddCapacity}: Device):
   return response?.data;
 }
 
-export async function deleteDevice(id: string): Promise<Device> {
+export async function deleteDevice(id: string): Promise<number> {
   let response;
   try {
     response = await axios.delete(`${URL}/devices/${id}`);

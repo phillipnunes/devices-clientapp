@@ -8,28 +8,26 @@ import {
   DialogActions,
   Stack
 } from '@mui/material';
-import {Device} from "../../types/device";
+import {DeviceWithId} from "../../types/device";
 import Select from "../select";
+import {options} from "../../constants";
 
 type DeviceForm = {
   title: string;
   open: boolean;
   onClose: () => void;
-  onSave: (arg: Device) => void;
-  edit: Device;
+  onSave: (arg: DeviceWithId) => void;
+  edit: DeviceWithId;
 }
 
 function DeviceFormComponent({ title, open, onClose, onSave, edit }: DeviceForm): JSX.Element {
+  const [id, setId] = useState<string>('');
   const [systemName, setSystemName] = useState<string>('');
   const [type, setType] = useState<string>('');
   const [hddCapacity, setHddCapacity] = useState<number>(0);
-  const options = [
-    {id: 0, value: 'Windows Workstation'},
-    {id: 1, value: 'Windows Server'},
-    {id: 2, value: 'Mac'}
-  ];
 
   function setEditValues() {
+    setId(edit.id);
     setSystemName(edit.systemName);
     setType(edit.type);
     setHddCapacity(edit.hddCapacity);
@@ -48,9 +46,15 @@ function DeviceFormComponent({ title, open, onClose, onSave, edit }: DeviceForm)
   }, [edit])
 
   function handleSave() {
+    function getOptionId(value: string) {
+      return options.filter(option => option.value === value)[0].id
+    }
+
     onSave({
+      id,
+      isEditing: edit?.isEditing,
       systemName,
-      type,
+      type: getOptionId(type),
       hddCapacity
     })
 
@@ -83,6 +87,7 @@ function DeviceFormComponent({ title, open, onClose, onSave, edit }: DeviceForm)
             options={options}
             label="Type"
             onChange={value => setType(value)}
+            initialValue={edit?.type}
           />
           <TextField
             aria-label="hdd capacity"
