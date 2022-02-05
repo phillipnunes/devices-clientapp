@@ -1,6 +1,7 @@
 export type Device = {
   id?: string;
-  system_name: string;
+  systemName: string;
   type: string;
-  hdd_capacity: string;
+  hddCapacity: number;
+  isEditing?: boolean;
 }

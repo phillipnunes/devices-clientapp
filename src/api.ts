@@ -8,7 +8,7 @@ export async function getDevices(): Promise<Device[]> {
   try {
     response = await axios.get(`${URL}/devices`);
   } catch (e) {
-    console.log('Error', e)
+    console.log('Error', e?.message)
   }
 
   return response?.data;
@@ -19,37 +19,37 @@ export async function getDevice(id: string): Promise<Device> {
   try {
     response = await axios.get(`${URL}/devices/${id}`);
   } catch (e) {
-    console.log('Error', e)
+    console.log('Error', e?.message)
   }
 
   return response?.data;
 }
 
-export async function addDevice({system_name, type, hdd_capacity}: Device): Promise<Device> {
+export async function addDevice({systemName, type, hddCapacity}: Device): Promise<Device> {
   let response;
   try {
     response = await axios.post(`${URL}/devices`, {
-      system_name,
+      system_name: systemName,
       type,
-      hdd_capacity
+      hdd_capacity: hddCapacity
     });
   } catch (e) {
-    console.log('Error', e)
+    console.log('Error', e?.message)
   }
 
   return response?.data;
 }
 
-export async function updateDevice({id, system_name, type, hdd_capacity}: Device): Promise<Device> {
+export async function updateDevice({id, systemName, type, hddCapacity}: Device): Promise<Device> {
   let response;
   try {
     response = await axios.put(`${URL}/devices/${id}`, {
-      system_name,
+      system_name: systemName,
       type,
-      hdd_capacity
+      hdd_capacity: hddCapacity
     });
   } catch (e) {
-    console.log('Error', e)
+    console.log('Error', e?.message)
   }
 
   return response?.data;
@@ -60,7 +60,7 @@ export async function deleteDevice(id: string): Promise<Device> {
   try {
     response = await axios.delete(`${URL}/devices/${id}`);
   } catch (e) {
-    console.log('Error', e)
+    console.log('Error', e?.message)
   }
 
   return response?.data;

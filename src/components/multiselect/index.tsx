@@ -1,10 +1,11 @@
 import {useState} from "react";
-import Select, {components, MultiValue} from "react-select";
+import SelectMUI, {components, MultiValue} from "react-select";
 import {Tag} from '../../types/tag'
 
 type SelectType = {
   options: MultiValue<Tag>;
   onChange: (arg: string[]) => void;
+  isMulti?: boolean;
 }
 
 const Option = (props: any) => {
@@ -22,7 +23,7 @@ const Option = (props: any) => {
   );
 };
 
-export default function MultiSelect({ options, onChange }: SelectType): JSX.Element {
+export default function Select({ options, onChange, isMulti }: SelectType): JSX.Element {
   const [selectedOptions, setSelectedOptions] = useState<MultiValue<Tag>>([])
 
   function tagsToArray(tags: MultiValue<Tag>): string[] {
@@ -35,9 +36,9 @@ export default function MultiSelect({ options, onChange }: SelectType): JSX.Elem
   }
 
   return (
-    <Select
+    <SelectMUI
       options={options}
-      isMulti
+      isMulti={isMulti}
       closeMenuOnSelect={false}
       hideSelectedOptions={false}
       components={{
