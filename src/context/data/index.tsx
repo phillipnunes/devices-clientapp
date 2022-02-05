@@ -1,17 +1,24 @@
 import {createContext, useEffect, useState} from 'react'
-import {getDevices, deleteDevice, updateDevice as updateDeviceAPI} from "../../api";
+import {
+  getDevices,
+  deleteDevice,
+  updateDevice as updateDeviceAPI,
+  addDevice as addDeviceAPI
+} from "../../api";
 import {DeviceWithId} from "../../types/device";
 
 type Context = {
   devices: DeviceWithId[];
   removeDevice: (arg: string) => void;
   updateDevice: (arg: DeviceWithId) => void;
+  addDevice: (arg: DeviceWithId) => void;
 }
 
 export const DataContext = createContext<Context>({
   devices: [],
   removeDevice: () => null,
-  updateDevice: () => null
+  updateDevice: () => null,
+  addDevice: () => null
 });
 
 function DataContextProvider({ children }: JSX.ElementChildrenAttribute): JSX.Element {
@@ -42,8 +49,18 @@ function DataContextProvider({ children }: JSX.ElementChildrenAttribute): JSX.El
     })
   }
 
+  function addDevice(device: DeviceWithId) {
+    addDeviceAPI(device).then(response => {
+      if(response) {
+        getDevices().then(data => {
+          setDevices(data)
+        });
+      }
+    })
+  }
+
   return (
-    <DataContext.Provider value={{devices, removeDevice, updateDevice}}>
+    <DataContext.Provider value={{devices, removeDevice, updateDevice, addDevice}}>
       {children}
     </DataContext.Provider>
   )

@@ -6,15 +6,17 @@ import {Button} from "@mui/material";
 import DeviceForm from "../device-form";
 import {DeviceWithId} from "../../types/device";
 
+const initialEditValues = {
+  id: '',
+  systemName: '',
+  type: '',
+  hddCapacity: 0
+}
+
 function App(): JSX.Element {
-  const {devices, updateDevice} = useContext(DataContext);
+  const {devices, updateDevice, addDevice} = useContext(DataContext);
   const [open, setOpen] = useState(false);
-  const [edit, setEdit] = useState({
-    id: '',
-    systemName: '',
-    type: '',
-    hddCapacity: 0
-  })
+  const [edit, setEdit] = useState(initialEditValues)
 
   useEffect(() => {
     // @ts-ignore
@@ -26,6 +28,9 @@ function App(): JSX.Element {
   function handleOnSave(payload: DeviceWithId) {
     if (payload?.isEditing) {
       updateDevice(payload);
+      setEdit(initialEditValues);
+    } else {
+      addDevice(payload);
     }
 
     setOpen(false);
@@ -35,6 +40,10 @@ function App(): JSX.Element {
     <div className="app">
       <Table devices={devices} setEdit={setEdit} />
       <Button
+        sx={{
+          marginTop: '10px',
+          float: 'right'
+        }}
         variant="contained"
         onClick={() => setOpen(true)}>
           Add New Device
