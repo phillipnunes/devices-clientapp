@@ -40,7 +40,7 @@ export async function getDevice(id: string): Promise<DeviceApi> {
   return response?.data;
 }
 
-export async function addDevice({systemName, type, hddCapacity}: Device): Promise<Device> {
+export async function addDevice({systemName, type, hddCapacity}: Device): Promise<DeviceApi> {
   let response;
   try {
     response = await axios.post(`${URL}/devices`, {

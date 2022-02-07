@@ -1,52 +1,56 @@
-import {useState} from "react";
-import SelectMUI, {components, MultiValue} from "react-select";
-import {Tag} from '../../types/tag'
+import {useState} from 'react';
+import {
+  OutlinedInput,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select
+} from '@mui/material';
 
-type SelectType = {
-  options: MultiValue<Tag>;
-  onChange: (arg: string[]) => void;
-  isMulti?: boolean;
+type Option = {
+  id: string,
+  value: string
 }
 
-const Option = (props: any) => {
-  return (
-    <div>
-      <components.Option {...props}>
-        <input
-          type="checkbox"
-          checked={props.isSelected}
-          onChange={() => null}
-        />{" "}
-        <label>{props.label}</label>
-      </components.Option>
-    </div>
-  );
+type MultiSelect = {
+  label: string,
+  options: Option[]
+}
+
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: 224,
+      width: 250,
+    },
+  },
 };
 
-export default function Select({ options, onChange, isMulti }: SelectType): JSX.Element {
-  const [selectedOptions, setSelectedOptions] = useState<MultiValue<Tag>>([])
-
-  function tagsToArray(tags: MultiValue<Tag>): string[] {
-    return tags.map(tag => tag.value);
-  }
-
-  function handleChange(selected: MultiValue<Tag>) {
-    setSelectedOptions(selected);
-    onChange(tagsToArray(selected));
-  }
+export default function MultiSelectComponent({label, options}: MultiSelect) {
+  const [item, setItem] = useState<string | string[]>([]);
 
   return (
-    <SelectMUI
-      options={options}
-      isMulti={isMulti}
-      closeMenuOnSelect={false}
-      hideSelectedOptions={false}
-      components={{
-        Option
-      }}
-      onChange={handleChange}
-      value={selectedOptions}
-      classNamePrefix="multiselect"
-    />
-  )
+    <div>
+      <FormControl sx={{ m: 1, width: 300 }}>
+        <InputLabel id="multiple-select">{label}</InputLabel>
+        <Select
+          labelId="multiple-select"
+          multiple
+          value={item}
+          onChange={event => setItem(event.target.value)}
+          input={<OutlinedInput label={label} />}
+          MenuProps={MenuProps}
+        >
+          {options.map((option) => (
+            <MenuItem
+              key={option.id}
+              value={option.value}
+            >
+              {option.value}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </div>
+  );
 }

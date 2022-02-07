@@ -51,10 +51,17 @@ function DataContextProvider({ children }: JSX.ElementChildrenAttribute): JSX.El
 
   function addDevice(device: DeviceWithId) {
     addDeviceAPI(device).then(response => {
-      if(response) {
-        getDevices().then(data => {
-          setDevices(data)
-        });
+      const {id, type, system_name, hdd_capacity} = response;
+      if(id) {
+        setDevices([
+          ...devices,
+          {
+            id,
+            type,
+            systemName: system_name,
+            hddCapacity: hdd_capacity
+          }
+        ])
       }
     })
   }

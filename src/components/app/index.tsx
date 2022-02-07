@@ -5,6 +5,7 @@ import {useContext, useEffect, useState} from "react";
 import {Button} from "@mui/material";
 import DeviceForm from "../device-form";
 import {DeviceWithId} from "../../types/device";
+import Filter from "../filter";
 
 const initialEditValues = {
   id: '',
@@ -38,6 +39,7 @@ function App(): JSX.Element {
 
   return (
     <div className="app">
+      <Filter />
       <Table devices={devices} setEdit={setEdit} />
       <Button
         sx={{
