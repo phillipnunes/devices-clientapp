@@ -1,5 +1,6 @@
-import {useState} from "react";
+import {useContext} from "react";
 import Select from "../select";
+import {DataContext} from "../../context/data";
 
 const options = [
   {id: 'SYSTEM_NAME', value: 'System Name'},
@@ -7,11 +8,11 @@ const options = [
 ]
 
 export default function Sort() {
-  const [item, setItem] = useState('');
+  const {sortDevices} = useContext(DataContext);
 
   return <Select
     options={options}
     label="Sort By"
-    onChange={value => setItem(value)}
+    onChange={value => sortDevices(value)}
   />
 }

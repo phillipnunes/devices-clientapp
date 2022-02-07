@@ -10,8 +10,8 @@ function normalizeData(data: DeviceApi[]) {
   }
 
   return data.map((it) => ({
-    ...it,
-    hddCapacity: it.hdd_capacity,
+    id: it.id,
+    hddCapacity: Number(it.hdd_capacity),
     systemName: it.system_name,
     type: getTypeValue(it.type)
   }))

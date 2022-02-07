@@ -6,19 +6,22 @@ import {
   addDevice as addDeviceAPI
 } from "../../api";
 import {DeviceWithId} from "../../types/device";
+import {properties} from "../../constants";
 
 type Context = {
   devices: DeviceWithId[];
   removeDevice: (arg: string) => void;
   updateDevice: (arg: DeviceWithId) => void;
   addDevice: (arg: DeviceWithId) => void;
+  sortDevices: (arg: string) => void;
 }
 
 export const DataContext = createContext<Context>({
   devices: [],
   removeDevice: () => null,
   updateDevice: () => null,
-  addDevice: () => null
+  addDevice: () => null,
+  sortDevices: () => null
 });
 
 function DataContextProvider({ children }: JSX.ElementChildrenAttribute): JSX.Element {
@@ -29,6 +32,10 @@ function DataContextProvider({ children }: JSX.ElementChildrenAttribute): JSX.El
       setDevices(data)
     })
   }, [])
+
+  useEffect(() => {
+    console.log('AA', devices);
+  }, [devices])
 
   function removeDevice(id: string) {
     deleteDevice(id).then(response => {
@@ -59,15 +66,40 @@ function DataContextProvider({ children }: JSX.ElementChildrenAttribute): JSX.El
             id,
             type,
             systemName: system_name,
-            hddCapacity: hdd_capacity
+            hddCapacity: Number(hdd_capacity)
           }
         ])
       }
     })
   }
 
+  function sortDevices(option: string) {
+    const {SYSTEM_NAME, HDD_CAPACITY} = properties;
+
+    function sortBy(prop: string) {
+      const sorted = devices
+        .sort((a, b) => {
+          if (option === SYSTEM_NAME.name) {
+            // @ts-ignore
+            return a[prop].localeCompare(b[prop]); // The value is a string
+          }
+          // @ts-ignore
+          return a[prop] - b[prop]; // The value is a Number
+        })
+
+      setDevices([...sorted]);
+    }
+
+    if (option === SYSTEM_NAME.name) {
+      sortBy(SYSTEM_NAME.prop);
+    }
+    if (option === HDD_CAPACITY.name) {
+      sortBy(HDD_CAPACITY.prop);
+    }
+  }
+
   return (
-    <DataContext.Provider value={{devices, removeDevice, updateDevice, addDevice}}>
+    <DataContext.Provider value={{devices, removeDevice, updateDevice, addDevice, sortDevices}}>
       {children}
     </DataContext.Provider>
   )
