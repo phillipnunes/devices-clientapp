@@ -1,12 +1,12 @@
 import axios from 'axios';
 import {Device, DeviceWithId, DeviceApi} from "./types/device";
-import {options} from "./constants";
+import {devices} from "./constants";
 
 const URL = 'http://localhost:3000';
 
 function normalizeData(data: DeviceApi[]) {
   function getTypeValue(item: string) {
-    return options.filter(opt => opt.id === item)[0].value
+    return devices.filter(device => device.id === item)[0].value
   }
 
   return data.map((it) => ({

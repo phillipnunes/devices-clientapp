@@ -4,7 +4,8 @@ import {
   InputLabel,
   MenuItem,
   FormControl,
-  Select
+  Select,
+  Box
 } from '@mui/material';
 
 type Option = {
@@ -30,8 +31,8 @@ export default function MultiSelectComponent({label, options}: MultiSelect) {
   const [item, setItem] = useState<string | string[]>([]);
 
   return (
-    <div>
-      <FormControl sx={{ m: 1, width: 300 }}>
+    <Box>
+      <FormControl fullWidth>
         <InputLabel id="multiple-select">{label}</InputLabel>
         <Select
           labelId="multiple-select"
@@ -51,6 +52,6 @@ export default function MultiSelectComponent({label, options}: MultiSelect) {
           ))}
         </Select>
       </FormControl>
-    </div>
+    </Box>
   );
 }

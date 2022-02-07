@@ -6,6 +6,7 @@ import {Button} from "@mui/material";
 import DeviceForm from "../device-form";
 import {DeviceWithId} from "../../types/device";
 import Filter from "../filter";
+import Sort from "../sort";
 
 const initialEditValues = {
   id: '',
@@ -39,7 +40,10 @@ function App(): JSX.Element {
 
   return (
     <div className="app">
-      <Filter />
+      <div className="app__actions">
+        <Filter />
+        <Sort />
+      </div>
       <Table devices={devices} setEdit={setEdit} />
       <Button
         sx={{

@@ -11,7 +11,7 @@ type Select = {
   options: Option[];
   label: string;
   onChange: (arg: string) => void;
-  initialValue: string;
+  initialValue?: string;
 }
 
 export default function Select({options, label, onChange, initialValue}: Select) {

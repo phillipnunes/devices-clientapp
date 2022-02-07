@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import {DeviceWithId} from "../../types/device";
 import Select from "../select";
-import {options} from "../../constants";
+import {devices} from "../../constants";
 
 type DeviceForm = {
   title: string;
@@ -46,15 +46,15 @@ function DeviceFormComponent({ title, open, onClose, onSave, edit }: DeviceForm)
   }, [edit])
 
   function handleSave() {
-    function getOptionId(value: string) {
-      return options.filter(option => option.value === value)[0].id
+    function getDeviceId(value: string) {
+      return devices.filter(device => device.value === value)[0].id
     }
 
     onSave({
       id,
       isEditing: edit?.isEditing,
       systemName,
-      type: getOptionId(type),
+      type: getDeviceId(type),
       hddCapacity
     })
 
@@ -84,7 +84,7 @@ function DeviceFormComponent({ title, open, onClose, onSave, edit }: DeviceForm)
             onChange={event => setSystemName(event.target.value)}
           />
           <Select
-            options={options}
+            options={devices}
             label="Type"
             onChange={value => setType(value)}
             initialValue={edit?.type}
