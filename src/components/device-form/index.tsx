@@ -6,7 +6,8 @@ import {
   DialogContent,
   TextField,
   DialogActions,
-  Stack
+  Stack,
+  Typography
 } from '@mui/material';
 import {DeviceWithId} from "../../types/device";
 import Select from "../select";
@@ -25,6 +26,7 @@ function DeviceFormComponent({ title, open, onClose, onSave, edit }: DeviceForm)
   const [systemName, setSystemName] = useState<string>('');
   const [type, setType] = useState<string>('');
   const [hddCapacity, setHddCapacity] = useState<number>(0);
+  const [hasError, setHasError] = useState(false)
 
   function setEditValues() {
     setId(edit.id);
@@ -45,7 +47,21 @@ function DeviceFormComponent({ title, open, onClose, onSave, edit }: DeviceForm)
     }
   }, [edit])
 
+  function formIsValid() {
+    if (systemName === '' || type === '' || hddCapacity === 0) {
+      setHasError(true);
+      return false;
+    }
+
+    setHasError(false);
+    return true;
+  }
+
   function handleSave() {
+    if(!formIsValid()) {
+      return;
+    }
+
     function getDeviceId(value: string) {
       return devices.filter(device => device.value === value)[0].id
     }
@@ -62,6 +78,7 @@ function DeviceFormComponent({ title, open, onClose, onSave, edit }: DeviceForm)
   }
 
   function handleClose() {
+    setHasError(false);
     resetValues()
     onClose()
   }
@@ -70,6 +87,7 @@ function DeviceFormComponent({ title, open, onClose, onSave, edit }: DeviceForm)
     <Dialog open={open} onClose={handleClose} fullWidth>
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
+        {hasError && <Typography sx={{color: 'red'}} >Please, fill out all entry fields</Typography>}
         <Stack component="form" spacing={3}>
           <TextField
             aria-label="system name"
