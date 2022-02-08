@@ -13,7 +13,8 @@ function normalizeData(data: DeviceApi[]) {
     id: it.id,
     hddCapacity: Number(it.hdd_capacity),
     systemName: it.system_name,
-    type: getTypeValue(it.type)
+    type: getTypeValue(it.type),
+    show: true
   }))
 }
 

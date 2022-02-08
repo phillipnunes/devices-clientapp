@@ -33,7 +33,7 @@ export default function Table({devices, setEdit}: Table) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {devices?.map((device: DeviceWithId) => (
+          {devices?.map((device: DeviceWithId) => device.show && (
             <TableRow
               key={device.id}
             >

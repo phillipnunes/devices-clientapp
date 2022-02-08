@@ -10,6 +10,7 @@ export type Device = {
   type: string;
   hddCapacity: number;
   isEditing?: boolean;
+  show?: boolean;
 }
 
 export type DeviceWithId = Device & { id: string; }

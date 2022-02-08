@@ -9,13 +9,14 @@ import {
 } from '@mui/material';
 
 type Option = {
-  id: string,
-  value: string
+  id: string;
+  value: string;
 }
 
 type MultiSelect = {
-  label: string,
-  options: Option[]
+  label: string;
+  options: Option[];
+  onChange: (arg: string | string[]) => void;
 }
 
 const MenuProps = {
@@ -27,8 +28,13 @@ const MenuProps = {
   },
 };
 
-export default function MultiSelectComponent({label, options}: MultiSelect) {
+export default function MultiSelectComponent({label, options, onChange}: MultiSelect) {
   const [item, setItem] = useState<string | string[]>([]);
+
+  function handleOnChange(items: string | string[]) {
+    setItem(items);
+    onChange(items);
+  }
 
   return (
     <Box>
@@ -38,7 +44,7 @@ export default function MultiSelectComponent({label, options}: MultiSelect) {
           labelId="multiple-select"
           multiple
           value={item}
-          onChange={event => setItem(event.target.value)}
+          onChange={event => handleOnChange(event.target.value)}
           input={<OutlinedInput label={label} />}
           MenuProps={MenuProps}
         >
