@@ -1,6 +1,6 @@
 ## :zap: Devices application
 
-An application used to list, insert, update and delete devices, built with React, Hooks, TypeScript, SCSS, Jest/Enzyme and Material UI.
+An application used to list, insert, update and delete devices, built with React, Hooks, TypeScript, SCSS, Jest/Testing Library and Material UI.
 
 It's consuming a fake API from this repository: https://github.com/NinjaRMM/devicesTask_serverApp
 
