@@ -6,6 +6,8 @@ It's consuming a fake API from this repository: https://github.com/NinjaRMM/devi
 
 There is an .env file in the root folder changing the default port, to not conflict with the API when running locally.
 
+There are some tests created for the table component and the filter "type" allows multiple choice.
+
 ## :cloud: Screen Shots
 
 #### Home page:
