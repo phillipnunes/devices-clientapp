@@ -43,6 +43,7 @@ export default function Table({devices, setEdit}: Table) {
               <TableCell align="right">{device.hddCapacity}</TableCell>
               <TableCell align="right">
                 <Edit
+                  aria-label={`Edit device ${device.id}`}
                   cursor="pointer"
                   titleAccess="Edit"
                   onClick={() => setEdit({
@@ -51,6 +52,7 @@ export default function Table({devices, setEdit}: Table) {
                   })}
                 />
                 <Delete
+                  aria-label={`Delete device ${device.id}`}
                   cursor="pointer"
                   titleAccess="Delete"
                   onClick={() => removeDevice(device.id)}

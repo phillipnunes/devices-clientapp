@@ -34,7 +34,7 @@ export default function Select({options, label, onChange, initialValue}: Select)
       <FormControl fullWidth>
         <InputLabel id={`select-${label}`}>{label}</InputLabel>
         <SelectMUI
-          aria-label="hdd capacity"
+          aria-label={label}
           labelId={`select-${label}`}
           value={value}
           label={label}
